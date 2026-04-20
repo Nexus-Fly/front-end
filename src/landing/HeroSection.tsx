@@ -27,9 +27,9 @@ function DroneModel() {
   return (
     <primitive
       object={scene}
-      scale={1.8}
-      position={[0, -0.6, 0]}
-      rotation={[0.1, -0.6, 0]}
+      scale={8.8} // tamaño del modelo
+      position={[0, -0.6, 0]} // ligeramente elevado para que no toque el suelo
+      rotation={[0.1, -0.6, 0]} // ligera inclinación para una pose más dinámica
     />
   );
 }
