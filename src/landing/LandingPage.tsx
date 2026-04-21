@@ -5,6 +5,7 @@ import FeaturesSection from './FeaturesSection';
 import ArchitectureSection from './ArchitectureSection';
 import StatsSection from './StatsSection';
 import TechStackSection from './TechStackSection';
+import SimulationSection from './SimulationSection';
 import FooterSection from './FooterSection';
 
 export default function LandingPage() {
@@ -49,6 +50,7 @@ export default function LandingPage() {
             <li><a href="#features" onClick={() => setMenuOpen(false)}>FEATURES</a></li>
             <li><a href="#architecture" onClick={() => setMenuOpen(false)}>ARCHITECTURE</a></li>
             <li><a href="#stats" onClick={() => setMenuOpen(false)}>STATS</a></li>
+            <li><a href="#simulation" onClick={() => setMenuOpen(false)}>SIMULATION</a></li>
             <li><a href="#tech" onClick={() => setMenuOpen(false)}>TECH</a></li>
           </ul>
 
@@ -75,6 +77,7 @@ export default function LandingPage() {
       <FeaturesSection />
       <ArchitectureSection />
       <StatsSection />
+      <SimulationSection />
       <TechStackSection />
       <FooterSection />
     </div>

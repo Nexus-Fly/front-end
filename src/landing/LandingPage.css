@@ -939,6 +939,156 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
+   SIMULATION SECTION
+   ═══════════════════════════════════════════════════════════════════════ */
+.simulation-section {
+  padding: 100px 3rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.simulation-container {
+  margin-top: 3rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.simulation-section.visible .simulation-container {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.terminal-window {
+  background: #0a0a0c;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.terminal-header {
+  background: var(--bg-card);
+  padding: 0.8rem 1rem;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border-card);
+  position: relative;
+}
+
+.terminal-dots {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.terminal-dots .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.dot.red { background: #ff5f56; }
+.dot.yellow { background: #ffbd2e; }
+.dot.green { background: #27c93f; }
+
+.terminal-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--text-dim);
+}
+
+.terminal-restart {
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  border-radius: 4px;
+  padding: 0.3rem 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.terminal-restart:not(.disabled):hover {
+  border-color: var(--rust-primary);
+  color: var(--text-primary);
+}
+
+.terminal-restart.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.terminal-body {
+  padding: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  min-height: 380px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.terminal-prompt-line {
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 0.6rem;
+}
+
+.prompt-path { color: #5aa1f2; font-weight: 600; }
+.prompt-char { color: var(--rust-bright); font-weight: bold; }
+.prompt-cmd { color: var(--text-primary); }
+
+.terminal-logs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.log-line {
+  display: flex;
+  gap: 0.8rem;
+  word-break: break-all;
+}
+
+.log-node {
+  font-weight: 600;
+  min-width: 65px;
+}
+.log-node.node-1 { color: #4ade80; }
+.log-node.node-2 { color: #818cf8; }
+.log-node.node-3 { color: #fb923c; }
+
+.log-level {
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+.log-msg {
+  color: #d1d5db;
+}
+
+.cursor-blink {
+  display: inline-block;
+  color: var(--rust-bright);
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
    ANIMATIONS
    ═══════════════════════════════════════════════════════════════════════ */
 @keyframes fadeInUp {
