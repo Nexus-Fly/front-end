@@ -78,6 +78,46 @@ export default function SimulationSection() {
     }
   };
 
+  // --- Derive Map State from Logs ---
+  let drone2Pos = { x: 30, y: 15 };
+  let drone3Pos = { x: 65, y: 85 };
+  let parcelHolder = 'none';
+  let drone2Status = 'idle';
+  let drone3Status = 'idle';
+  let d2Bidding = false;
+  let d3Bidding = false;
+
+  const currentLogIndex = visibleLogs.length - 1;
+
+  if (currentLogIndex >= 0) parcelHolder = 'depot'; // order created
+  
+  if (currentLogIndex >= 2 && currentLogIndex < 4) d2Bidding = true;
+  if (currentLogIndex >= 3 && currentLogIndex < 4) d3Bidding = true;
+
+  if (currentLogIndex >= 4) { // winner
+    drone2Pos = { x: 15, y: 50 }; // moving to depot
+    drone2Status = 'moving';
+  }
+  if (currentLogIndex >= 6) { // picked up / InTransit
+    parcelHolder = 'node2';
+    drone2Pos = { x: 50, y: 50 }; // drone 2 moving to destination but stops midway
+  }
+  if (currentLogIndex >= 7) { // handoff requested
+    drone2Status = 'low-battery';
+    // Drone 3 starts moving to drone 2 early to save time
+    drone3Pos = { x: 50, y: 50 };
+    drone3Status = 'moving';
+  }
+  if (currentLogIndex >= 8) { // handoff accepted / picked up by N3
+    parcelHolder = 'node3';
+    drone3Pos = { x: 85, y: 50 }; // Drone 3 continues to destination
+    drone2Status = 'offline';
+  }
+  if (currentLogIndex >= 9) { // delivered
+    parcelHolder = 'destination';
+    drone3Status = 'idle';
+  }
+
   return (
     <section 
       id="simulation" 
@@ -86,13 +126,14 @@ export default function SimulationSection() {
     >
       <div className="section-header center">
         <span className="section-tag">LIVE SIMULATION</span>
-        <h2 className="section-title">Rust Consensus <span className="title-accent">Engine</span></h2>
+        <h2 className="section-title">Autonomous <span className="title-accent">Handoff</span></h2>
         <p className="section-desc">
           Watch a real-time visualization of the BFT consensus and decentralised order lifecycle running on our Rust backend.
         </p>
       </div>
 
       <div className="simulation-container">
+        {/* TERMINAL UI */}
         <div className="terminal-window">
           <div className="terminal-header">
             <div className="terminal-dots">
@@ -142,6 +183,41 @@ export default function SimulationSection() {
                 </div>
               )}
             </div>
+          </div>
+        </div>
+
+        {/* MAP UI */}
+        <div className="simulation-map">
+          <div className="map-grid"></div>
+
+          {/* Depot */}
+          <div className={`map-node depot ${parcelHolder === 'depot' ? 'has-parcel' : ''}`} style={{ left: '15%', top: '50%' }}>
+            <span className="node-icon">📦</span>
+            <span className="node-label">Depot</span>
+            {parcelHolder === 'depot' && <div className="parcel" />}
+            {/* If auction open, show signal rings from depot */}
+            {currentLogIndex >= 1 && currentLogIndex < 4 && <div className="depot-signal" />}
+          </div>
+
+          {/* Destination */}
+          <div className={`map-node destination ${parcelHolder === 'destination' ? 'has-parcel' : ''}`} style={{ left: '85%', top: '50%' }}>
+            <span className="node-icon">📍</span>
+            <span className="node-label">Drop-off</span>
+            {parcelHolder === 'destination' && <div className="parcel" />}
+          </div>
+
+          {/* Drone 2 */}
+          <div className={`map-drone drone-2 ${drone2Status}`} style={{ left: `${drone2Pos.x}%`, top: `${drone2Pos.y}%` }}>
+            {d2Bidding && <div className="drone-ring bidding" />}
+            <span className="drone-id">N2</span>
+            {parcelHolder === 'node2' && <div className="parcel" />}
+          </div>
+
+          {/* Drone 3 */}
+          <div className={`map-drone drone-3 ${drone3Status}`} style={{ left: `${drone3Pos.x}%`, top: `${drone3Pos.y}%` }}>
+            {d3Bidding && <div className="drone-ring bidding" />}
+            <span className="drone-id">N3</span>
+            {parcelHolder === 'node3' && <div className="parcel" />}
           </div>
         </div>
       </div>

@@ -943,12 +943,15 @@
    ═══════════════════════════════════════════════════════════════════════ */
 .simulation-section {
   padding: 100px 3rem;
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
   position: relative;
 }
 
 .simulation-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
   margin-top: 3rem;
   opacity: 0;
   transform: translateY(30px);
@@ -1088,6 +1091,158 @@
   50% { opacity: 0; }
 }
 
+/* ── Map UI ──────────────────────────────────────────────────────────── */
+.simulation-map {
+  background: #0d0d10;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(255,255,255,0.02);
+  min-height: 480px;
+}
+
+.map-grid {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center;
+  pointer-events: none;
+}
+
+.map-node, .map-drone {
+  position: absolute;
+  transform: translate(-50%, -50%); /* Centered */
+  transition: top 1.5s cubic-bezier(0.4, 0, 0.2, 1), left 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  z-index: 5;
+}
+
+.node-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+}
+
+.node-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  background: var(--bg-carbon);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-card);
+}
+
+.map-drone {
+  z-index: 10;
+}
+
+.drone-id {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 0.75rem;
+  color: #fff;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+  z-index: 2;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.drone-2 .drone-id { background: #818cf8; }
+.drone-3 .drone-id { background: #fb923c; }
+
+.drone-ring {
+  position: absolute;
+  left: 50%;
+  top: 16px;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.drone-ring.bidding {
+  animation: ping-map 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.depot-signal {
+  position: absolute;
+  left: 50%;
+  top: 20px;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  border: 2px solid #4ade80;
+  border-radius: 50%;
+  animation: ping-map 2s ease-out infinite;
+  z-index: 1;
+}
+
+.drone-2 .drone-ring { color: #818cf8; }
+.drone-3 .drone-ring { color: #fb923c; }
+
+@keyframes ping-map {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+}
+
+.map-drone.low-battery .drone-id {
+  animation: pulse-red 1s infinite;
+  background: #ff5f56;
+}
+
+.map-drone.offline .drone-id {
+  background: #333;
+  color: #777;
+  opacity: 0.8;
+}
+
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 95, 86, 0.7); }
+  50% { box-shadow: 0 0 0 10px rgba(255, 95, 86, 0); }
+}
+
+.parcel {
+  width: 14px;
+  height: 14px;
+  background: var(--rust-bright);
+  border: 2px solid #fff;
+  border-radius: 3px;
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5), 0 0 8px var(--rust-glow);
+  animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 3;
+}
+
+.map-node.depot .parcel, .map-node.destination .parcel {
+  top: -8px;
+  right: -8px;
+  bottom: auto;
+}
+
+@keyframes popIn {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
 /* ═══════════════════════════════════════════════════════════════════════
    ANIMATIONS
    ═══════════════════════════════════════════════════════════════════════ */
@@ -1142,6 +1297,7 @@
   .features-section,
   .arch-section,
   .stats-section,
+  .simulation-section,
   .tech-section {
     padding: 60px 1.5rem;
   }
@@ -1150,6 +1306,13 @@
   .modules-grid { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .tech-grid { grid-template-columns: repeat(2, 1fr); }
+
+  .simulation-container {
+    grid-template-columns: 1fr;
+  }
+  .simulation-map {
+    min-height: 350px;
+  }
 
   .footer-inner {
     grid-template-columns: 1fr 1fr;
