@@ -124,7 +124,6 @@ export default function SimulationSection() {
                 // Colorize the log parts for better terminal look
                 const isNode1 = log.includes('[node1]');
                 const isNode2 = log.includes('[node2]');
-                const isNode3 = log.includes('[node3]');
                 const nodeClass = isNode1 ? 'node-1' : (isNode2 ? 'node-2' : 'node-3');
                 
                 return (
