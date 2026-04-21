@@ -1,9 +1,9 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, type ReactElement } from 'react';
 
 interface TechItem {
   name: string;
   role: string;
-  icon: JSX.Element;
+  icon: ReactElement;
 }
 
 const techStack: TechItem[] = [

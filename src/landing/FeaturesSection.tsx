@@ -1,7 +1,7 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, type ReactElement } from 'react';
 
 interface FeatureCard {
-  icon: JSX.Element;
+  icon: ReactElement;
   title: string;
   badge: string;
   badgeClass: string;
