@@ -20,7 +20,7 @@ export default function SimulationSection() {
   const [isRunning, setIsRunning] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-  const logsEndRef = useRef<HTMLDivElement>(null);
+  const terminalBodyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -43,8 +43,11 @@ export default function SimulationSection() {
   }, [isRunning, visibleLogs.length]);
 
   useEffect(() => {
-    if (logsEndRef.current) {
-      logsEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (terminalBodyRef.current) {
+      terminalBodyRef.current.scrollTo({
+        top: terminalBodyRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
     }
   }, [visibleLogs]);
 
@@ -110,7 +113,7 @@ export default function SimulationSection() {
               <span>{isRunning ? 'RUNNING...' : 'RESTART'}</span>
             </button>
           </div>
-          <div className="terminal-body">
+          <div className="terminal-body" ref={terminalBodyRef}>
             <div className="terminal-prompt-line">
               <span className="prompt-path">~/nexus-fly</span>
               <span className="prompt-char">$</span>
@@ -139,7 +142,6 @@ export default function SimulationSection() {
                   <span className="cursor-blink">|</span>
                 </div>
               )}
-              <div ref={logsEndRef} />
             </div>
           </div>
         </div>
