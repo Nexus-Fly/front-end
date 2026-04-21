@@ -1,80 +1,4 @@
-import { useRef, useEffect, Suspense } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, useGLTF, Environment, ContactShadows } from '@react-three/drei';
-import * as THREE from 'three';
-
-/* ── 3-D Drone model ─────────────────────────────────────── */
-function DroneModel() {
-  const { scene, animations } = useGLTF('/drone.glb');
-  const mixer = useRef<THREE.AnimationMixer | null>(null);
-
-  useEffect(() => {
-    if (animations.length > 0) {
-      mixer.current = new THREE.AnimationMixer(scene);
-      animations.forEach((clip) => {
-        mixer.current!.clipAction(clip).play();
-      });
-    }
-    return () => {
-      mixer.current?.stopAllAction();
-    };
-  }, [animations, scene]);
-
-  useFrame((_, delta) => {
-    mixer.current?.update(delta);
-  });
-
-  return (
-    <primitive
-      object={scene}
-      scale={8.8} // tamaño del modelo
-      position={[0, -0.6, 0]} // ligeramente elevado para que no toque el suelo
-      rotation={[0.1, -0.6, 0]} // ligera inclinación para una pose más dinámica
-    />
-  );
-}
-
-/* ── Floating particles ──────────────────────────────────── */
-function Particles({ count = 120 }: { count?: number }) {
-  const mesh = useRef<THREE.InstancedMesh>(null!);
-  const dummy = useRef(new THREE.Object3D());
-  const speeds = useRef<Float32Array>(new Float32Array(count));
-
-  useEffect(() => {
-    for (let i = 0; i < count; i++) {
-      speeds.current[i] = 0.1 + Math.random() * 0.4;
-      dummy.current.position.set(
-        (Math.random() - 0.5) * 20,
-        (Math.random() - 0.5) * 12,
-        (Math.random() - 0.5) * 10
-      );
-      dummy.current.scale.setScalar(0.02 + Math.random() * 0.04);
-      dummy.current.updateMatrix();
-      mesh.current.setMatrixAt(i, dummy.current.matrix);
-    }
-    mesh.current.instanceMatrix.needsUpdate = true;
-  }, [count]);
-
-  useFrame((state) => {
-    const t = state.clock.elapsedTime;
-    for (let i = 0; i < count; i++) {
-      mesh.current.getMatrixAt(i, dummy.current.matrix);
-      dummy.current.matrix.decompose(dummy.current.position, dummy.current.quaternion, dummy.current.scale);
-      dummy.current.position.y += Math.sin(t * speeds.current[i] + i) * 0.002;
-      dummy.current.position.x += Math.cos(t * speeds.current[i] * 0.5 + i) * 0.001;
-      dummy.current.updateMatrix();
-      mesh.current.setMatrixAt(i, dummy.current.matrix);
-    }
-    mesh.current.instanceMatrix.needsUpdate = true;
-  });
-
-  return (
-    <instancedMesh ref={mesh} args={[undefined, undefined, count]}>
-      <sphereGeometry args={[1, 8, 8]} />
-      <meshBasicMaterial color="#CE422B" transparent opacity={0.6} />
-    </instancedMesh>
-  );
-}
+﻿import Spline from '@splinetool/react-spline';
 
 /* ── Hero Section ────────────────────────────────────────── */
 interface HeroProps {
@@ -86,53 +10,18 @@ export default function HeroSection({ scrollY }: HeroProps) {
 
   return (
     <section id="hero" className="hero-section">
-      {/* Background canvas */}
+      {/* Spline 3D scene */}
       <div className="hero-canvas-wrap">
-        <Canvas
-          camera={{ position: [0, 1.2, 5], fov: 45 }}
-          gl={{ antialias: true, alpha: true }}
-          style={{ background: 'transparent' }}
-        >
-          <ambientLight intensity={0.35} />
-          <directionalLight position={[5, 5, 5]} intensity={1.2} color="#ffffff" />
-          <directionalLight position={[-3, 2, -2]} intensity={0.5} color="#CE422B" />
-          <spotLight position={[0, 8, 0]} angle={0.5} penumbra={1} intensity={1} color="#ff6633" />
-
-          <Suspense fallback={null}>
-            <DroneModel />
-            <ContactShadows
-              position={[0, -1.5, 0]}
-              opacity={0.5}
-              scale={10}
-              blur={2.5}
-              far={4}
-              color="#CE422B"
-            />
-            <Environment preset="night" />
-          </Suspense>
-
-          <Particles />
-          <OrbitControls
-            enableZoom={false}
-            enablePan={false}
-            autoRotate
-            autoRotateSpeed={0.8}
-            maxPolarAngle={Math.PI / 2}
-            minPolarAngle={Math.PI / 4}
-          />
-        </Canvas>
+        <Spline scene="https://prod.spline.design/aH-9HHlbB1Gcd71w/scene.splinecode" />
       </div>
 
-      {/* Hero text content */}
       <div className="hero-content" style={{ transform: `translateY(${parallax}px)` }}>
         <div className="hero-tag">
           <span className="tag-dot" />
           BUILT WITH RUST &nbsp;×&nbsp; TASHI VERTEX BFT
         </div>
 
-        <h1 className="hero-title">
-          NEXUS<span className="hero-accent">-FLY</span>
-        </h1>
+        
 
         <p className="hero-subtitle">
           Decentralized swarm coordination for autonomous delivery fleets.
