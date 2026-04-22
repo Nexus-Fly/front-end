@@ -95,17 +95,13 @@ export default function ArchitectureSection() {
       {/* Order lifecycle FSM */}
       <div className="arch-fsm">
         <h3 className="arch-sub-title">Order Lifecycle FSM</h3>
-        <div className="fsm-flow">
+        <div className="fsm-pipeline">
           {ORDER_STATES.map((s, i) => (
-            <div key={i} className="fsm-node" style={{ animationDelay: `${i * 0.12}s` }}>
-              <div className="fsm-dot" style={{ background: s.color }} />
-              <span className="fsm-label">{s.label}</span>
-              {i < ORDER_STATES.length - 1 && (
-                <svg className="fsm-arrow" viewBox="0 0 30 10" aria-hidden="true">
-                  <line x1="0" y1="5" x2="24" y2="5" stroke="#CE422B" strokeWidth="1.5" />
-                  <polygon points="24,2 30,5 24,8" fill="#CE422B" />
-                </svg>
-              )}
+            <div key={i} className="fsm-step" style={{ animationDelay: `${i * 0.10}s` }}>
+              <div className="fsm-step-index">{String(i + 1).padStart(2, '0')}</div>
+              <div className="fsm-step-dot" style={{ background: s.color, boxShadow: `0 0 10px ${s.color}55` }} />
+              <div className="fsm-step-label">{s.label}</div>
+              {i < ORDER_STATES.length - 1 && <div className="fsm-step-line" />}
             </div>
           ))}
         </div>

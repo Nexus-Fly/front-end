@@ -594,43 +594,66 @@
 /* ── FSM Flow ──────────────────────────────────────────────────────── */
 .arch-fsm {
   margin-bottom: 4rem;
-  overflow-x: auto;
-  padding: 1rem 0;
 }
-.fsm-flow {
+.fsm-pipeline {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: center;
   gap: 0;
-  min-width: max-content;
+  flex-wrap: nowrap;
+  overflow-x: auto;
 }
-.fsm-node {
+@media (max-width: 700px) {
+  .fsm-pipeline { justify-content: flex-start; }
+}
+.fsm-step {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  position: relative;
+  padding: 1rem 0 0.8rem;
+  min-width: 80px;
+  flex: 1;
   opacity: 0;
 }
-.arch-section.visible .fsm-node {
-  animation: fadeInRight 0.5s ease both;
+.arch-section.visible .fsm-step {
+  animation: fadeInUp 0.45s ease both;
 }
-.fsm-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  box-shadow: 0 0 8px var(--rust-glow);
+.fsm-step-line {
+  position: absolute;
+  top: calc(1rem + 7px);
+  left: calc(50% + 7px);
+  width: calc(100% - 14px);
+  height: 1px;
+  background: linear-gradient(90deg, rgba(206,66,43,0.45), rgba(206,66,43,0.08));
 }
-.fsm-label {
+.fsm-step-index {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.52rem;
+  font-weight: 700;
+  color: rgba(206,66,43,0.35);
+  letter-spacing: 0.12em;
+  margin-bottom: 0.5rem;
+}
+.fsm-step-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  margin-bottom: 0.55rem;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+.fsm-step:hover .fsm-step-dot {
+  transform: scale(1.35);
+}
+.fsm-step-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
   font-weight: 600;
   color: var(--text-secondary);
+  text-align: center;
   white-space: nowrap;
-}
-.fsm-arrow {
-  width: 30px;
-  height: 10px;
-  flex-shrink: 0;
-  margin: 0 0.3rem;
+  letter-spacing: 0.03em;
 }
 
 /* ── Modules grid ──────────────────────────────────────────────────── */
@@ -1099,7 +1122,7 @@
   position: relative;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(255,255,255,0.02);
-  min-height: 480px;
+  height: 420px;
 }
 
 .map-link {
@@ -1437,7 +1460,7 @@
     grid-template-columns: 1fr;
   }
   .simulation-map {
-    min-height: 350px;
+    height: 320px;
   }
 
   .map-hud {
