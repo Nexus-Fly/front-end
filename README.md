@@ -17,57 +17,85 @@ If you are developing a production application, we recommend updating the config
 
 ```js
 export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+  <div align="center">
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+  <pre>
+   ███╗   ██╗███████╗██╗  ██╗██╗   ██╗███████╗   ███████╗██╗     ██╗   ██╗
+   ████╗  ██║██╔════╝╚██╗██╔╝██║   ██║██╔════╝   ██╔════╝██║     ╚██╗ ██╔╝
+   ██╔██╗ ██║█████╗   ╚███╔╝ ██║   ██║███████╗   █████╗  ██║      ╚████╔╝ 
+   ██║╚██╗██║██╔══╝   ██╔██╗ ██║   ██║╚════██║   ██╔══╝  ██║       ╚██╔╝  
+   ██║ ╚████║███████╗██╔╝ ██╗╚██████╔╝███████║   ██║     ███████╗   ██║   
+   ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝     ╚══════╝   ╚═╝   
+  </pre>
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+  ### Nexus-Fly landing experience
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+  [![Vite](https://img.shields.io/badge/Vite-8.x-ffb703?style=for-the-badge&logo=vite)](https://vitejs.dev/)
+  [![React](https://img.shields.io/badge/React-19.x-61dafb?style=for-the-badge&logo=react)](https://react.dev/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-6.x-007acc?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+  [![Three.js](https://img.shields.io/badge/Three.js-0.182-black?style=for-the-badge&logo=three.js)](https://threejs.org/)
+  [![Status](https://img.shields.io/badge/Status-Landing-blue?style=for-the-badge)]()
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+  </div>
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+  ---
+
+  ## Overview
+
+  Front-end for the Nexus-Fly project. It is a single-page landing experience built with React, TypeScript, and Vite, with 3D and interactive sections that describe the system and simulation.
+
+  ## Features
+
+  - Multi-section landing layout: hero, features, architecture, stats, simulation, tech stack, and footer.
+  - 3D assets support via Three.js, React Three Fiber, and Spline.
+  - Responsive navigation and scroll-driven UI.
+
+  ## Tech Stack
+
+  - React 19 + TypeScript
+  - Vite 8
+  - Three.js, React Three Fiber, Drei
+  - Spline runtime and model-viewer
+
+  ## Project Structure
+
+  ```
+  front-end/
+    src/
+      landing/          # Landing sections and layout
+      model3d/          # 3D assets and textures
+      App.tsx
+      main.tsx
+  ```
+
+  ## Local Development
+
+  Install dependencies:
+
+  ```bash
+  npm install
+  ```
+
+  Start the dev server:
+
+  ```bash
+  npm run dev
+  ```
+
+  Build for production:
+
+  ```bash
+  npm run build
+  ```
+
+  Preview the production build:
+
+  ```bash
+  npm run preview
+  ```
+
+  Lint:
+
+  ```bash
+  npm run lint
+  ```
