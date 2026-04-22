@@ -27,12 +27,18 @@ type BatteryState = {
   drone1: number;
   drone2: number;
   drone3: number;
+  drone4: number;
+  drone5: number;
+  drone6: number;
 };
 
 type MapState = {
   drone1: DroneState;
   drone2: DroneState;
   drone3: DroneState;
+  drone4: DroneState;
+  drone5: DroneState;
+  drone6: DroneState;
   parcelHolder: 'none' | 'depot' | 'drone1' | 'drone2' | 'drone3' | 'destination';
   auctionOpen: boolean;
   activeRoute: 'none' | 'depot-to-handoff' | 'handoff-to-destination' | 'complete';
@@ -42,23 +48,25 @@ type MapState = {
 };
 
 const BATTERY_BY_LOG_INDEX: BatteryState[] = [
-  { drone1: 89, drone2: 59, drone3: 79 },
-  { drone1: 88, drone2: 58, drone3: 78 },
-  { drone1: 87, drone2: 57, drone3: 77 },
-  { drone1: 86, drone2: 56, drone3: 76 },
-  { drone1: 85, drone2: 56, drone3: 76 },
-  { drone1: 84, drone2: 55, drone3: 75 },
-  { drone1: 83, drone2: 54, drone3: 74 },
-  { drone1: 82, drone2: 53, drone3: 73 },
-  { drone1: 81, drone2: 52, drone3: 72 },
-  { drone1: 80, drone2: 51, drone3: 71 },
-  { drone1: 80, drone2: 51, drone3: 71 },
-  { drone1: 80, drone2: 51, drone3: 71 },
+  { drone1: 89, drone2: 59, drone3: 79, drone4: 69, drone5: 74, drone6: 66 },
+  { drone1: 88, drone2: 58, drone3: 78, drone4: 68, drone5: 73, drone6: 65 },
+  { drone1: 87, drone2: 57, drone3: 77, drone4: 67, drone5: 72, drone6: 64 },
+  { drone1: 86, drone2: 56, drone3: 76, drone4: 66, drone5: 71, drone6: 63 },
+  { drone1: 85, drone2: 56, drone3: 76, drone4: 66, drone5: 71, drone6: 63 },
+  { drone1: 84, drone2: 55, drone3: 75, drone4: 65, drone5: 70, drone6: 62 },
+  { drone1: 83, drone2: 54, drone3: 74, drone4: 64, drone5: 69, drone6: 61 },
+  { drone1: 82, drone2: 53, drone3: 73, drone4: 63, drone5: 68, drone6: 60 },
+  { drone1: 81, drone2: 52, drone3: 72, drone4: 62, drone5: 67, drone6: 59 },
+  { drone1: 80, drone2: 51, drone3: 71, drone4: 61, drone5: 66, drone6: 58 },
+  { drone1: 80, drone2: 51, drone3: 71, drone4: 61, drone5: 66, drone6: 58 },
+  { drone1: 80, drone2: 51, drone3: 71, drone4: 61, drone5: 66, drone6: 58 },
+  { drone1: 80, drone2: 51, drone3: 71, drone4: 61, drone5: 66, drone6: 58 },
+  { drone1: 80, drone2: 51, drone3: 71, drone4: 61, drone5: 66, drone6: 58 },
 ];
 
 function getBatteries(currentLogIndex: number): BatteryState {
   if (currentLogIndex < 0) {
-    return { drone1: 90, drone2: 60, drone3: 80 };
+    return { drone1: 90, drone2: 60, drone3: 80, drone4: 70, drone5: 75, drone6: 67 };
   }
   const boundedIndex = Math.min(currentLogIndex, BATTERY_BY_LOG_INDEX.length - 1);
   return BATTERY_BY_LOG_INDEX[boundedIndex];
@@ -73,7 +81,7 @@ const INITIAL_MAP_STATE: MapState = {
   activeRoute: 'none',
   phaseLabel: 'Booting simulation',
   winner: '-',
-  batteries: { drone1: 90, drone2: 60, drone3: 80 },
+  batteries: { drone1: 90, drone2: 60, drone3: 80, drone4: 70, drone5: 75, drone6: 67 },
 };
 
 function deriveMapState(currentLogIndex: number): MapState {
@@ -81,6 +89,9 @@ function deriveMapState(currentLogIndex: number): MapState {
     drone1: { ...INITIAL_MAP_STATE.drone1 },
     drone2: { ...INITIAL_MAP_STATE.drone2 },
     drone3: { ...INITIAL_MAP_STATE.drone3 },
+    drone4: { ...INITIAL_MAP_STATE.drone4 },
+    drone5: { ...INITIAL_MAP_STATE.drone5 },
+    drone6: { ...INITIAL_MAP_STATE.drone6 },
     parcelHolder: 'none',
     auctionOpen: false,
     activeRoute: 'none',
@@ -137,15 +148,19 @@ function deriveMapState(currentLogIndex: number): MapState {
     state.phaseLabel = 'Ledger settled — swarm free';
   }
 
-  if (currentLogIndex >= 1) {
+  if (currentLogIndex >= 12) {
+    state.phaseLabel = 'Swarm regrouped';
+  }
+
+  if (currentLogIndex >= 2) {
     state.parcelHolder = 'depot';
   }
 
-  if (currentLogIndex >= 1 && currentLogIndex < 3) {
+  if (currentLogIndex >= 2 && currentLogIndex < 4) {
     state.auctionOpen = true;
   }
 
-  if (currentLogIndex >= 3) {
+  if (currentLogIndex >= 4) {
     state.drone1.status = 'moving';
   }
 
@@ -154,19 +169,19 @@ function deriveMapState(currentLogIndex: number): MapState {
     state.drone1.y = 75;
   }
 
-  if (currentLogIndex >= 5) {
+  if (currentLogIndex >= 6) {
     state.parcelHolder = 'drone1';
     state.drone1.hasParcel = true;
   }
 
-  if (currentLogIndex >= 6) {
+  if (currentLogIndex >= 7) {
     state.activeRoute = 'depot-to-handoff';
     state.drone1.status = 'delivering';
     state.drone1.x = 36;
     state.drone1.y = 52;
   }
 
-  if (currentLogIndex >= 7) {
+  if (currentLogIndex >= 8) {
     state.drone1.x = 50;
     state.drone1.y = 26;
     state.drone1.status = 'handoff';
@@ -176,7 +191,7 @@ function deriveMapState(currentLogIndex: number): MapState {
     state.drone2.y = 26;
   }
 
-  if (currentLogIndex >= 8) {
+  if (currentLogIndex >= 9) {
     state.activeRoute = 'handoff-to-destination';
     state.parcelHolder = 'drone2';
     state.drone1.hasParcel = false;
@@ -190,7 +205,7 @@ function deriveMapState(currentLogIndex: number): MapState {
     state.drone2.y = 20;
   }
 
-  if (currentLogIndex >= 9) {
+  if (currentLogIndex >= 10) {
     state.drone2.x = 85;
     state.drone2.y = 18;
   }
