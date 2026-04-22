@@ -116,6 +116,21 @@ export default function FeaturesSection() {
 
   return (
     <section id="features" ref={sectionRef} className={`features-section ${visible ? 'visible' : ''}`}>
+
+      {/* Video demo */}
+      <div className="video-section">
+        <span className="section-tag">DEMO</span>
+        <h2 className="section-title">WATCH IT<br /><span className="title-accent">IN ACTION</span></h2>
+        <div className="video-wrapper">
+          <iframe
+            src="https://www.youtube.com/embed/BnBTw9CslL0?rel=0&modestbranding=1"
+            title="Nexus-Fly demo"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      </div>
+
       <div className="section-header">
         <span className="section-tag">CORE CAPABILITIES</span>
         <h2 className="section-title">TOP<br />FEATURES</h2>

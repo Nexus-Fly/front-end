@@ -507,6 +507,38 @@
   position: relative;
 }
 
+/* ── Video section ─────────────────────────────────────────────────── */
+.video-section {
+  margin-bottom: 5rem;
+  text-align: center;
+}
+.video-section .section-tag {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+}
+.video-section .section-title {
+  margin-bottom: 2rem;
+}
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(206, 66, 43, 0.22);
+  box-shadow: 0 0 60px rgba(206, 66, 43, 0.08);
+}
+.video-wrapper iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #000;
+}
+
 .features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
